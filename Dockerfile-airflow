@@ -29,4 +29,5 @@ ENV PYSPARK_DRIVER_PYTHON=python3
 
 
 RUN pip install delta-spark==3.1.0
-ENV PYSPARK_SUBMIT_ARGS="--packages io.delta:delta-core_2.12:2.4.0 pyspark-shell"
+
+ENV PYSPARK_SUBMIT_ARGS="--packages io.delta:delta-spark_2.12:3.1.0 pyspark-shell"

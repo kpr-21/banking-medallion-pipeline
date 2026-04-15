@@ -125,13 +125,12 @@ with DAG(
     ]
 
 # Step 2
-    # Bronze
+    # Parquet → Bronze
     customers_to_parquet >> customers_to_bronze
     accounts_to_parquet >> accounts_to_bronze
     transactions_to_parquet >> transactions_to_bronze
 
-
-    #move tasks after bronxe
+    # Bronze → Move
     customers_to_bronze >> move_customers
     accounts_to_bronze >> move_accounts
     transactions_to_bronze >> move_transactions

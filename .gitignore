@@ -3,3 +3,5 @@ airflow_db/
 __pycache__/
 *.pyc
 .env
+data/
+/opt/airflow/data/
