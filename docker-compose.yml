@@ -1,5 +1,4 @@
 services:
-
   airflow-init:
     build:
       context: .
@@ -13,16 +12,19 @@ services:
           --firstname admin
           --lastname admin
           --role Admin
-          --email admin@example.com"
+          --email admin@example.com || true"
+    environment:
+      - AIRFLOW__CORE__FERNET_KEY=
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts       
+      - ./scripts:/opt/airflow/scripts
       - ./spark_jobs:/opt/airflow/spark_jobs
       - ./data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
-      - ./airflow_db:/opt/airflow
-    environment:
-      - AIRFLOW__CORE__FERNET_KEY=LOzHQhniYPu6cvgGwDy-9SNbAuzQn_yKqYoZqcp5CHg=
+      - ./airflow_db/airflow.db:/opt/airflow/airflow.db
 
   airflow-webserver:
     build:
@@ -39,11 +41,11 @@ services:
       - AIRFLOW__CORE__FERNET_KEY=LOzHQhniYPu6cvgGwDy-9SNbAuzQn_yKqYoZqcp5CHg=
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts        
+      - ./scripts:/opt/airflow/scripts
       - ./spark_jobs:/opt/airflow/spark_jobs
       - ./data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
-      - ./airflow_db:/opt/airflow
+      - ./airflow_db/airflow.db:/opt/airflow/airflow.db
     ports:
       - "8080:8080"
     command: webserver
@@ -63,9 +65,9 @@ services:
       - AIRFLOW__CORE__FERNET_KEY=LOzHQhniYPu6cvgGwDy-9SNbAuzQn_yKqYoZqcp5CHg=
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts        
+      - ./scripts:/opt/airflow/scripts
       - ./spark_jobs:/opt/airflow/spark_jobs
       - ./data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
-      - ./airflow_db:/opt/airflow
+      - ./airflow_db/airflow.db:/opt/airflow/airflow.db
     command: scheduler

@@ -2,32 +2,24 @@ FROM apache/airflow:2.9.3
 
 USER root
 
-# -------- SYSTEM DEPENDENCIES --------
 RUN apt-get update && apt-get install -y \
     default-jdk \
     curl \
     vim \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# -------- ENV VARIABLES (IMPORTANT FOR SPARK) --------
 ENV JAVA_HOME=/usr/lib/jvm/default-java
 ENV PATH=$JAVA_HOME/bin:$PATH
 
-# -------- SWITCH USER --------
 USER airflow
 
-# -------- PYTHON DEPENDENCIES --------
 RUN pip install --no-cache-dir \
-    pyspark \
-    delta-spark \
-    pandas
+    "pyspark==3.5.1" \
+    "delta-spark==3.1.0" \
+    "pandas" \
+    "apache-airflow-providers-apache-spark" \
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.9.3/constraints-3.12.txt"
 
-# -------- (OPTIONAL BUT GOOD) --------
-# Avoid Spark hostname issues
 ENV PYSPARK_PYTHON=python3
 ENV PYSPARK_DRIVER_PYTHON=python3
-
-
-RUN pip install delta-spark==3.1.0
-
-ENV PYSPARK_SUBMIT_ARGS="--packages io.delta:delta-spark_2.12:3.1.0 pyspark-shell"
