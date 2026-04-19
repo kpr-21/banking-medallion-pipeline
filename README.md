@@ -74,7 +74,6 @@ Landing → Ingestion → Bronze → Silver → Gold
 ---
 
 ## 📂 Project Structure
-.
 ├── dags/
 │ └── banking_pipeline_dag.py
 ├── spark_jobs/
